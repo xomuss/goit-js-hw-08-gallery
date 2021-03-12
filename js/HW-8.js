@@ -34,18 +34,22 @@ function createGallaryMarkup(gallary) {
 //2. Реализация делегирования на галерее ul.js-gallery и получение url большого изображения.
 
 galleryListRef.addEventListener('click', onGalleryContainerClick);
+
 function onGalleryContainerClick(evt) {
   evt.preventDefault();
   if (!evt.target.classList.contains('gallery__image')) {
     return;
   }
-  const originalImg = evt.target.dataset.source;
-  console.log(evt.target.classList);
+  const src = evt.target.dataset.source;
+  const alt = evt.target.alt;
+  console.log(evt.target.alt);
 
   //3. Открытие модального окна по клику на элементе галереи.
   //4. Подмена значения атрибута src элемента img.lightbox__image.
-  lightboxRef.classList.add('is-open');
-  lightboxImgRef.src = originalImg;
+  // lightboxRef.classList.add('is-open');
+  toggleModal();
+  // lightboxImgRef.src = originalImg;
+  updateAttr(src, alt);
 }
 
 // 5. Закрытие модального окна по клику на кнопку button[data-action="close-lightbox"].
@@ -60,10 +64,24 @@ function onLightboxButtonClick(evt) {
   if (!evt.target.classList.contains('lightbox__button')) {
     return;
   }
-  lightboxRef.classList.remove('is-open');
-  lightboxImgRef.src = '';
+  toggleModal();
+  // lightboxImgRef.src = '';
+  clearAttr();
 }
 
 // Закрытие модального окна по клику на div.lightbox__overlay.
 // Закрытие модального окна по нажатию клавиши ESC.
 // Пролистывание изображений галереи в открытом модальном окне клавишами "влево" и "вправо".
+function updateAttr(src, alt) {
+  lightboxImgRef.src = src;
+  lightboxImgRef.alt = alt;
+}
+
+function toggleModal() {
+  lightboxRef.classList.toggle('is-open');
+}
+
+function clearAttr() {
+  lightboxImgRef.src = '';
+  lightboxImgRef.alt = '';
+}
